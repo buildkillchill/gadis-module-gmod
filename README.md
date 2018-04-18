@@ -8,3 +8,6 @@ It could be adapted for any source engine game, since it uses RCON for the ranks
 
 ### What about feature ______?
 If I don't have it implemented, feel free to fork it and DIY. You can submit a PR after it's done and if I like it, I'll implement it.
+
+### Lua Addon Notes
+Note that this branch has the lua configuration for our gmod server and web services, in this case, simply change URLs in *both files* as necessary to fit your server (and rename functions from `BKC...` to `YourServerPrefix...`, this is optional however).
