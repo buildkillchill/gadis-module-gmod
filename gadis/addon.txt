@@ -1,0 +1,9 @@
+"AddonInfo"
+{
+	"name"		"BKC Services"
+	"version"	"1.0"
+	"up_date"	"1/16/2018"
+	"author_name"	"Timberwolf"
+	"author_email"	"timberwolf@zenforic.com"
+	"author_url"	"https://w0lfr.net"
+}
