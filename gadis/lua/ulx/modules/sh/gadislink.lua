@@ -1,6 +1,6 @@
 function ulx.link(ply, linkCode)
   local steamid = ply:SteamID64()
-  http.Fetch("http://bkcservice.zenforic.com/link.php?id=" .. steamid .. "&code=" .. linkCode, linkThanks,
+  http.Fetch("http://bkcservice.zenforic.com/link.php?id=" .. steamid .. "&code=" .. linkCode,
 	function( body, len, headers, code )
 		ULib.tsay( ply, "You are now linked " .. ply:Nick() .. ", thank you." )
 	end,
