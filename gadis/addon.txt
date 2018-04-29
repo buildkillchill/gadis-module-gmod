@@ -1,8 +1,8 @@
 "AddonInfo"
 {
-	"name"		"BKC Services"
-	"version"	"1.0"
-	"up_date"	"1/16/2018"
+	"name"		"Gadis"
+	"version"	"2.1"
+	"up_date"	"4/29/2018"
 	"author_name"	"Timberwolf"
 	"author_email"	"timberwolf@zenforic.com"
 	"author_url"	"https://w0lfr.net"
