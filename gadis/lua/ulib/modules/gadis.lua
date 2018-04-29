@@ -1,6 +1,6 @@
 if CLIENT then return end
 
-function BKCServicesHalfHour()
+function GadisHalfHour()
 	local count = #player.GetHumans()
 	if count > 0 then
 		for k,v in pairs(player.GetHumans()) do
@@ -12,15 +12,25 @@ function BKCServicesHalfHour()
 	end
 end
 
-function BKCServicesInit()
-	timer.Create( "BKCServicesHalfHour", 1800, 0, BKCServicesHalfHour )
+function GadisInit()
+	timer.Create( "GadisHalfHour", 1800, 0, GadisHalfHour )
 end
-hook.Add( "Initialize", "BKCServicesInit", BKCServicesInit )
+hook.Add( "Initialize", "GadisInit", GadisInit )
 
-function BKCServicesOnDisconnect( ply )
+function GadisOnDisconnect( ply )
 	if ply:SteamID() != "BOT" then
 		local hours = math.floor((ply:GetUTime() + CurTime() - ply:GetUTimeStart())/60/60)
 		http.Fetch("http://bkcservice.zenforic.com/player.php?id="..ply:SteamID64().."&rank="..ply:GetUserGroup().."&hours="..hours)
+		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID64().."&acc=0&act=1")
 	end
 end
-hook.Add( "PlayerDisconnected", "BKCServicesOnDisconnect", BKCServicesOnDisconnect )
+hook.Add( "PlayerDisconnected", "GadisOnDisconnect", GadisOnDisconnect )
+
+function GadisOnConnect( ply )
+	if ply:SteamID() != "BOT" then
+		local hours = math.floor((ply:GetUTime() + CurTime() - ply:GetUTimeStart())/60/60)
+		http.Fetch("http://bkcservice.zenforic.com/player.php?id="..ply:SteamID64().."&rank="..ply:GetUserGroup().."&hours="..hours)
+		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID64().."&acc=0&act=0")
+	end
+end
+hook.Add( "PlayerConnected", "GadisOnConnect", GadisOnConnect )
