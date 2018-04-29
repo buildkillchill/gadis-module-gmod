@@ -17,14 +17,16 @@ function GadisInit()
 end
 hook.Add( "Initialize", "GadisInit", GadisInit )
 
-function GadisOnDisconnect( ply )
-	if ply:SteamID() != "BOT" then
+gameevent.Listen( "player_disconnect" )
+function GadisOnDisconnect( data )
+	local ply = player.GetBySteamID(data.networkid)
+	if !data.bot and ply != false then
 		local hours = math.floor((ply:GetUTime() + CurTime() - ply:GetUTimeStart())/60/60)
 		http.Fetch("http://bkcservice.zenforic.com/player.php?id="..ply:SteamID64().."&rank="..ply:GetUserGroup().."&hours="..hours)
 		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID64().."&acc=0&act=1")
 	end
 end
-hook.Add( "PlayerDisconnected", "GadisOnDisconnect", GadisOnDisconnect )
+hook.Add( "player_disconnect", "GadisOnDisconnect", GadisOnDisconnect )
 
 function GadisPlayerInitialSpawn( ply )
 	if ply:SteamID() != "BOT" then
