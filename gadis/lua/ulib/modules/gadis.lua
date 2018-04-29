@@ -28,8 +28,6 @@ hook.Add( "PlayerDisconnected", "GadisOnDisconnect", GadisOnDisconnect )
 
 function GadisOnConnect( ply )
 	if ply:SteamID() != "BOT" then
-		local hours = math.floor((ply:GetUTime() + CurTime() - ply:GetUTimeStart())/60/60)
-		http.Fetch("http://bkcservice.zenforic.com/player.php?id="..ply:SteamID64().."&rank="..ply:GetUserGroup().."&hours="..hours)
 		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID64().."&acc=0&act=0")
 	end
 end
