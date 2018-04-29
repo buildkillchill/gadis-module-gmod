@@ -26,9 +26,9 @@ function GadisOnDisconnect( ply )
 end
 hook.Add( "PlayerDisconnected", "GadisOnDisconnect", GadisOnDisconnect )
 
-function GadisOnConnect( ply )
+function GadisPlayerInitialSpawn( ply )
 	if ply:SteamID() != "BOT" then
 		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID64().."&acc=0&act=0")
 	end
 end
-hook.Add( "PlayerConnected", "GadisOnConnect", GadisOnConnect )
+hook.Add( "PlayerInitialSpawn", "GadisPlayerInitialSpawn", GadisPlayerInitialSpawn )
