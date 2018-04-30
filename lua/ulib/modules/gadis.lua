@@ -30,7 +30,7 @@ hook.Add( "player_disconnect", "GadisOnDisconnect", GadisOnDisconnect )
 
 function GadisPlayerInitialSpawn( ply )
 	if ply:SteamID() != "BOT" then
-		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID64().."&acc=0&act=0")
+		http.Fetch("http://bkcservice.zenforic.com/metrics.php?id="..ply:SteamID().."&acc=0&act=0")
 	end
 end
 hook.Add( "PlayerInitialSpawn", "GadisPlayerInitialSpawn", GadisPlayerInitialSpawn )
