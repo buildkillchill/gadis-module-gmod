@@ -19,11 +19,15 @@ hook.Add( "Initialize", "GadisInit", GadisInit )
 
 gameevent.Listen( "player_disconnect" )
 function GadisOnDisconnect( data )
-	http.Fetch("https://bkcapi.w0lfr.net/metrics.php?id="..data.networkid.."&acc=0&act=1")
-	local ply = player.GetBySteamID(data.networkid)
-	if !data.bot and ply != false then
-		local hours = math.floor((ply:GetUTime() + CurTime() - ply:GetUTimeStart())/60/60)
-		http.Fetch("https://bkcapi.w0lfr.net/player.php?id="..ply:SteamID64().."&rank="..ply:GetUserGroup().."&hours="..hours)
+	if !data.bot then
+		http.Fetch("https://bkcapi.w0lfr.net/metrics.php?id="..data.networkid.."&acc=0&act=1")
+		local uid = util.CRC("gm_" .. data.networkid .. "_gm")
+		local row = sql.QueryRow("SELECT totaltime FROM utime WHERE player = " .. uid .. ";")
+		local time = row and row.totaltime
+		local grp = ucl.getUserInfoFromID(uid)["group"]
+		local hours = math.floor(time/60/60)
+		local s64 = util.SteamIDTo64(data.networkid)
+		http.Fetch("https://bkcapi.w0lfr.net/player.php?id="..s64.."&rank="..grp.."&hours="..hours)
 	end
 end
 hook.Add( "player_disconnect", "GadisOnDisconnect", GadisOnDisconnect )
