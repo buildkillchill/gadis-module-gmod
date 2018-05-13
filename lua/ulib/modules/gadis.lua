@@ -18,8 +18,8 @@ end
 hook.Add( "Initialize", "GadisInit", GadisInit )
 
 gameevent.Listen( "player_disconnect" )
-function GadisOnDisconnect( data )
-	if !data.bot then
+function GadisPlayerDisconnect( data )
+	if not data.bot then
 		http.Fetch("https://bkcapi.w0lfr.net:7860/metrics.php?id="..data.networkid.."&acc=0&act=1")
 		local uid = util.CRC("gm_" .. data.networkid .. "_gm")
 		local row = sql.QueryRow("SELECT totaltime FROM utime WHERE player = " .. uid .. ";")
@@ -30,11 +30,13 @@ function GadisOnDisconnect( data )
 		http.Fetch("https://bkcapi.w0lfr.net:7860/player.php?id="..s64.."&rank="..grp.."&hours="..hours)
 	end
 end
-hook.Add( "player_disconnect", "GadisOnDisconnect", GadisOnDisconnect )
+hook.Add( "player_disconnect", "GadisPlayerDisconnect", GadisPlayerDisconnect )
 
-function GadisPlayerInitialSpawn( ply )
-	if ply:SteamID() != "BOT" then
-		http.Fetch("https://bkcapi.w0lfr.net:7860/metrics.php?id="..ply:SteamID().."&acc=0&act=0")
+gameevent.Listen( "player_connect" )
+function GadisPlayerConnect( data )
+	if not data.bot then
+		local s64 = util.SteamIDTo64(data.networkid)
+		http.Fetch("https://bkcapi.w0lfr.net:7860/metrics.php?id="..s64.."&acc=0&act=0")
 	end
 end
-hook.Add( "PlayerInitialSpawn", "GadisPlayerInitialSpawn", GadisPlayerInitialSpawn )
+hook.Add( "player_connect", "GadisPlayerConnect", GadisPlayerConnect )
