@@ -30,6 +30,8 @@ function GadisPlayerDisconnect( data )
 		local hours = math.floor(time/60/60)
 		local s64 = util.SteamIDTo64(data.networkid)
 		http.Fetch("https://bkcapi.w0lfr.net:7860/player.php?id="..s64.."&rank="..grp.."&hours="..hours)
+	else
+		print("ID " .. data.networkid .. " was determined to be a bot, ignoring connection")
 	end
 end
 hook.Add( "player_disconnect", "GadisPlayerDisconnect", GadisPlayerDisconnect )
@@ -41,6 +43,8 @@ function GadisPlayerConnect( data )
 		print("ID " .. data.networkid .. " was determined to be human, so connection will be logged")
 		local s64 = util.SteamIDTo64(data.networkid)
 		http.Fetch("https://bkcapi.w0lfr.net:7860/metrics.php?id="..s64.."&acc=0&act=0")
+	else
+		print("ID " .. data.networkid .. " was determined to be a bot, ignoring connection")
 	end
 end
 hook.Add( "player_connect", "GadisPlayerConnect", GadisPlayerConnect )
