@@ -19,7 +19,7 @@ hook.Add( "Initialize", "GadisInit", GadisInit )
 
 gameevent.Listen( "player_disconnect" )
 function GadisPlayerDisconnect( data )
-	if data.networkid ~= "BOT" then
+	if ~(data.networkid:lower():find("bot")) then
 		print("A HUMAN HAS DISCONNECTED! ID: " .. data.networkid)
 		http.Fetch("https://bkcapi.w0lfr.net:7860/metrics.php?id="..data.networkid.."&acc=0&act=1")
 		local uid = util.CRC("gm_" .. data.networkid .. "_gm")
@@ -37,7 +37,7 @@ hook.Add( "player_disconnect", "GadisPlayerDisconnect", GadisPlayerDisconnect )
 
 gameevent.Listen( "player_connect" )
 function GadisPlayerConnect( data )
-	if data.networkid ~= "BOT" then
+	if ~(data.networkid:lower():find("bot")) then
 		print("A HUMAN HAS CONNECTED! ID: " .. data.networkid)
 		local s64 = util.SteamIDTo64(data.networkid)
 		http.Fetch("https://bkcapi.w0lfr.net:7860/metrics.php?id="..s64.."&acc=0&act=0")
