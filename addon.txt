@@ -1,8 +1,8 @@
 "AddonInfo"
 {
 	"name"		"Gadis"
-	"version"	"2.1"
-	"up_date"	"4/29/2018"
+	"version"	"3.0b"
+	"up_date"	"5/16/2018"
 	"author_name"	"Timberwolf"
 	"author_email"	"timberwolf@zenforic.com"
 	"author_url"	"https://w0lfr.net"
