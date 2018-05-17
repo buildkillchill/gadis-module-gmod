@@ -14,7 +14,7 @@ end
 
 local function QueryMySQL(query)
 	local num = 0
-	for i, v in GetMySQLResult(query) do
+	for _ in pairs(GetMySQLResult(query)) do
 		num = num + 1
 	end
 	return num
@@ -41,14 +41,14 @@ gameevent.Listen( "player_disconnect" )
 function GadisPlayerDisconnect( data )
 	if not data.networkid:lower():find("bot") then
 		print("A HUMAN HAS DISCONNECTED! ID: " .. data.networkid)
-		QueryMySQL("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. data.networkid)
-		QueryMySQL("DELETE FROM `active` WHERE `id`=" .. data.networkid)
+		local s64 = util.SteamIDTo64(data.networkid)
+		QueryMySQL("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
+		QueryMySQL("DELETE FROM `active` WHERE `id`=" .. s64)
 		local uid = util.CRC("gm_" .. data.networkid .. "_gm")
 		local row = sql.QueryRow("SELECT totaltime FROM utime WHERE player = " .. uid .. ";")
 		local time = row and row.totaltime
 		local grp = ucl.getUserInfoFromID(uid)["group"]
 		local hours = math.floor(time / 60 / 60)
-		local s64 = util.SteamIDTo64(data.networkid)
 		local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
 		if linked then
 			local rankid = GetMySQLResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
