@@ -43,10 +43,9 @@ function GadisPlayerDisconnect( data )
 		local s64 = util.SteamIDTo64(data.networkid)
 		QueryMySQL("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
 		QueryMySQL("DELETE FROM `active` WHERE `id`=" .. s64)
-		local uid = util.CRC("gm_" .. data.networkid .. "_gm")
 		local row = sql.QueryRow("SELECT totaltime FROM utime WHERE player = " .. uid .. ";")
 		local time = row and row.totaltime
-		local grp = ucl.getUserInfoFromID(uid)["group"]
+		local grp = ULib.ucl.getUserInfoFromID(data.networkid).group
 		local hours = math.floor(time / 60 / 60)
 		local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
 		if linked then
