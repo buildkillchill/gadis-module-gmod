@@ -1,6 +1,6 @@
 if CLIENT then return end
 require("mysqloo")
-include("config.lua")
+include("gadis_config.lua")
 
 local function GetMySQLResult(query)
 	local db = mysqloo.connect(Gadis.host, Gadis.user, Gadis.pass, Gadis.name, Gadis.port)
