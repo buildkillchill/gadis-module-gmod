@@ -4,3 +4,23 @@ Gadis.port = 3306
 Gadis.user = "example"
 Gadis.pass = "SuperSecret"
 Gadis.name = "gadis"
+
+-- DON'T MODIFY BELOW UNLESS YOU KNOW WHAT YOU'RE DOING
+require("mysqloo")
+function GadisMySQLGetResult(query)
+	local db = mysqloo.connect(Gadis.host, Gadis.user, Gadis.pass, Gadis.name, Gadis.port)
+	db:connect()
+	db:wait()
+	local q = db:query(query)
+	q:start()
+	q:wait(true)
+	return q:getData()
+end
+
+function GadisMySQLQuery(query)
+	local num = 0
+	for _ in pairs(GetMySQLResult(query)) do
+		num = num + 1
+	end
+	return num
+end

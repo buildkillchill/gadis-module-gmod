@@ -1,13 +1,21 @@
+require("mysqloo")
+include("gadis_config.lua")
+
 function ulx.link(ply, linkCode)
 	local steamid = ply:SteamID64()
-	http.Fetch("http://bkcservice.zenforic.com/link.php?id=" .. steamid .. "&code=" .. linkCode,
-		function( body, len, headers, code )
+	local res = GadisMySQLGetResult("SELECT `id` FROM `link` WHERE `code`='" .. linkCode .. "' AND `used`=FALSE")
+	local num = 0
+	for _ in pairs(res) do
+		num = num + 1
+	end
+	if num == 1 then
+		local did = res[1].id
+		GadisMySQLQuery("INSERT INTO `linked` (`sid`, `did`) VALUES (" .. steamid .. "," .. did .. ") ON DUPLICATE KEY UPDATE `did`=" .. did .. ",`sid`=" .. steamid)
+		GadisMySQLQuery("UPDATE `link` SET `used`=TRUE WHERE `code`='" .. linkCode .. "'")
 		ULib.tsay( ply, "You are now linked " .. ply:Nick() .. ", thank you." )
-	end,
-	function( error )
-	ULib.tsayError( ply, "Link failed, error: " .. error, true )
-end
-  )
+	else
+		ULib.tsayError( ply, "Link failed, error: Invalid Link Code", true )
+	end
 end
 local link = ulx.command("Utility", "ulx link", ulx.link, "!link")
 link:defaultAccess(ULib.ACCESS_ALL)
