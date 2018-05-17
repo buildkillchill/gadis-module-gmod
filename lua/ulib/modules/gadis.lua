@@ -57,7 +57,7 @@ function GadisPlayerConnect( data )
 end
 hook.Add( "player_connect", "GadisPlayerConnect", GadisPlayerConnect )
 
-function GadisPlayerDisconnectViaShutdown( gadisPly )
+local function GadisPlayerDisconnectViaShutdown( gadisPly )
 	local s64 = gadisPly:SteamID64()
 	GadisMySQLQuery("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
 	GadisMySQLQuery("DELETE FROM `active` WHERE `id`=" .. s64)
