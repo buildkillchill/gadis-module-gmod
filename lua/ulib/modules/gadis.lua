@@ -50,7 +50,10 @@ function GadisPlayerDisconnect( data )
 		local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
 		if linked then
 			local rankid = GetMySQLResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
-			if rankid[0] >= 1 then
+			for k, v in pairs(rankid) do
+				print(v)
+			end
+			if rankid[0] ~= nil and rankid[0] >= 1 then
 				local don = "FALSE"
 				if grp:lower():find("donator") then
 					don = "TRUE"
