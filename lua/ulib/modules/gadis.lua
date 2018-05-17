@@ -40,11 +40,11 @@ hook.Add( "Initialize", "GadisInit", GadisInit )
 gameevent.Listen( "player_disconnect" )
 function GadisPlayerDisconnect( data )
 	if not data.networkid:lower():find("bot") then
-		local s64 = util.SteamIDTo64(data.networkid)
+		local gadisPly = ULib.getPlyByID(data.networkid)
+		local s64 = gadisPly:SteamID64()
 		QueryMySQL("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
 		QueryMySQL("DELETE FROM `active` WHERE `id`=" .. s64)
-		local row = sql.QueryRow("SELECT totaltime FROM utime WHERE player = " .. uid .. ";")
-		local time = row and row.totaltime
+		local time = gadisPly:GetUTimeTotalTime()
 		local grp = ULib.ucl.getUserInfoFromID(data.networkid).group
 		local hours = math.floor(time / 60 / 60)
 		local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
@@ -52,7 +52,7 @@ function GadisPlayerDisconnect( data )
 			local rankid = GetMySQLResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
 			if rankid ~= nil then
 				local don = "FALSE"
-				if grp:lower():find("donated") then
+				if grp:lower():find("donator") then
 					don = "TRUE"
 				end
 				QueryMySQL("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid .. " WHERE `id`=" .. s64)
