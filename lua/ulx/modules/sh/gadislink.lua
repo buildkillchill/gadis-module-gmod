@@ -1,3 +1,4 @@
+if CLIENT then return end
 require("mysqloo")
 include("../../../ulib/modules/gadis_config.lua")
 
