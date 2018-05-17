@@ -81,7 +81,7 @@ function GadisPlayerDisconnectViaShutdown( gadisPly )
 	QueryMySQL("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
 	QueryMySQL("DELETE FROM `active` WHERE `id`=" .. s64)
 	local time = gadisPly:GetUTimeTotalTime()
-	local grp = ULib.ucl.getUserInfoFromID(data.networkid).group
+	local grp = ULib.ucl.getUserInfoFromID(gadisPly:SteamID()).group
 	local hours = math.floor(time / 60 / 60)
 	local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
 	if linked then
