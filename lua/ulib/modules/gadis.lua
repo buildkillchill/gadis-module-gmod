@@ -71,8 +71,8 @@ function GadisPlayerConnect( data )
 	if not data.networkid:lower():find("bot") then
 		print("A HUMAN HAS CONNECTED! ID: " .. data.networkid)
 		local s64 = util.SteamIDTo64(data.networkid)
-		QueryMySQL("INSERT INTO `metrics` (id) VALUES (" .. data.networkid .. ")")
-		QueryMySQL("INSERT INTO `active` (id) VALUES (" .. data.networkid .. ")")
+		QueryMySQL("INSERT INTO `metrics` (id) VALUES (" .. s64 .. ")")
+		QueryMySQL("INSERT INTO `active` (id) VALUES (" .. s64 .. ")")
 	else
 		print("A BOT CONNECTED!")
 	end
