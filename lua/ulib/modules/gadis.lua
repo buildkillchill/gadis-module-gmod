@@ -46,19 +46,16 @@ function GadisPlayerDisconnect( data )
 		QueryMySQL("DELETE FROM `active` WHERE `id`=" .. s64)
 		local time = gadisPly:GetUTimeTotalTime()
 		local grp = ULib.ucl.getUserInfoFromID(data.networkid).group
-		print(grp)
 		local hours = math.floor(time / 60 / 60)
-		print(hours)
 		local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
 		if linked then
 			local rankid = GetMySQLResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
 			if rankid ~= nil and rankid[1].id >= 1 then
 				local don = "FALSE"
-				print(rankid[1].id)
 				if grp:lower():find("donator") then
 					don = "TRUE"
 				end
-				QueryMySQL("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `id`=" .. s64)
+				QueryMySQL("UPDATE `linked` SET `donated` = " .. don .. ", `hours` = " .. hours .. ", `rank` = " .. rankid[1].id .. " WHERE `id`=" .. s64)
 			end
 		end
 	else
