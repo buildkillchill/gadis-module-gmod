@@ -22,7 +22,7 @@ gameevent.Listen( "player_disconnect" )
 function GadisPlayerDisconnect( data )
 	if not data.networkid:lower():find("bot") then
 		local gadisPly = ULib.getPlyByID(data.networkid)
-		local s64 = gadisPly:SteamID64()
+		local s64 = util.SteamIDTo64(data.networkid)
 		GadisMySQLQuery("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
 		GadisMySQLQuery("DELETE FROM `active` WHERE `id`=" .. s64)
 		local time = gadisPly:GetUTimeTotalTime()
