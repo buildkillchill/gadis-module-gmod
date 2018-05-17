@@ -1,5 +1,5 @@
 require("mysqloo")
-include("gadis_config.lua")
+include("../../../ulib/modules/gadis_config.lua")
 
 function ulx.link(ply, linkCode)
 	local steamid = ply:SteamID64()
