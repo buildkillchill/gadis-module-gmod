@@ -1,14 +1,9 @@
 if CLIENT then return end
-require( "mysqloo" )
+require("mysqloo")
+include("config.lua")
 
 local function GetMySQLResult(query)
-	local row = sql.QueryRow("SELECT host,port,user,pass,db FROM gadis;")
-	local host = row and row.host
-	local port = row and row.port
-	local user = row and row.user
-	local pass = row and row.pass
-	local name = row and row.db
-	local db = mysqloo.connect(host, user, pass, name, port)
+	local db = mysqloo.connect(Gadis.host, Gadis.user, Gadis.pass, Gadis.name, Gadis.port)
 	db:connect()
 	db:wait()
 	local q = db:query(query)
