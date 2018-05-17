@@ -55,7 +55,7 @@ function GadisPlayerDisconnect( data )
 				if grp:lower():find("donator") then
 					don = "TRUE"
 				end
-				print(QueryMySQL("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `id`=" .. s64))
+				QueryMySQL("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
 			end
 		end
 	else
