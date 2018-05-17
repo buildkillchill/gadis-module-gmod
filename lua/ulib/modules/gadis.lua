@@ -75,3 +75,30 @@ function GadisPlayerConnect( data )
 	end
 end
 hook.Add( "player_connect", "GadisPlayerConnect", GadisPlayerConnect )
+
+function GadisPlayerDisconnectViaShutdown( gadisPly )
+	local s64 = gadisPly:SteamID64()
+	QueryMySQL("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
+	QueryMySQL("DELETE FROM `active` WHERE `id`=" .. s64)
+	local time = gadisPly:GetUTimeTotalTime()
+	local grp = ULib.ucl.getUserInfoFromID(data.networkid).group
+	local hours = math.floor(time / 60 / 60)
+	local linked = QueryMySQL("SELECT * FROM `linked` WHERE `sid`=" .. s64)
+	if linked then
+		local rankid = GetMySQLResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
+		if rankid ~= nil and rankid[1].id >= 1 then
+			local don = "FALSE"
+			if grp:lower():find("donator") then
+				don = "TRUE"
+			end
+			QueryMySQL("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
+		end
+	end
+end
+
+local function BKCShuttingDown()
+		for k, v in pairs(player.GetHumans()) do
+			GadisPlayerDisconnectViaShutdown(v)
+		end
+end
+hook.Add( "ShutDown", "BKCShuttingDown", BKCShuttingDown )
