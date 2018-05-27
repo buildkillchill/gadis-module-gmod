@@ -1,23 +1,6 @@
 if CLIENT then return end
 include("gadis_config.lua")
 
-function GadisHalfHour()
-	local count = #player.GetHumans()
-	if count > 0 then
-		for k, v in pairs(player.GetHumans()) do
-			if v:IsAdmin() then
-				return
-			end
-		end
-		http.Fetch("https://bkcapi.w0lfr.net:7860/call.php?serv=" .. engine.ActiveGamemode())
-	end
-end
-
-function GadisInit()
-	timer.Create( "GadisHalfHour", 1800, 0, GadisHalfHour )
-end
-hook.Add( "Initialize", "GadisInit", GadisInit )
-
 gameevent.Listen( "player_disconnect" )
 function GadisPlayerDisconnect( data )
 	if not data.networkid:lower():find("bot") then
@@ -49,7 +32,7 @@ gameevent.Listen( "player_connect" )
 function GadisPlayerConnect( data )
 	if not data.networkid:lower():find("bot") then
 		local s64 = util.SteamIDTo64(data.networkid)
-		GadisMySQLQuery("INSERT INTO `metrics` (id) VALUES (" .. s64 .. ")")
+		GadisMySQLQuery("REPLACE INTO `metrics` (id) VALUES (" .. s64 .. ")")
 		GadisMySQLQuery("INSERT INTO `active` (id) VALUES (" .. s64 .. ")")
 	else
 		print("A BOT CONNECTED!")
