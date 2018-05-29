@@ -11,7 +11,7 @@ function ulx.link(ply, linkCode)
 	end
 	if num == 1 then
 		local did = res[1].id
-		GadisMySQLQuery("INSERT INTO `linked` (`sid`, `did`) VALUES (" .. steamid .. "," .. did .. ") ON DUPLICATE KEY UPDATE `did`=" .. did .. ",`sid`=" .. steamid)
+		GadisMySQLQuery("INSERT INTO `accounts` (`sid`, `did`) VALUES (" .. steamid .. "," .. did .. ") ON DUPLICATE KEY UPDATE `did`=" .. did .. ",`sid`=" .. steamid)
 		GadisMySQLQuery("UPDATE `link` SET `used`=TRUE WHERE `code`='" .. linkCode .. "'")
 		ULib.tsay( ply, "You are now linked " .. ply:Nick() .. ", thank you." )
 	else

@@ -11,7 +11,7 @@ function GadisPlayerDisconnect( data )
 		local time = gadisPly:GetUTimeTotalTime()
 		local grp = ULib.ucl.getUserInfoFromID(data.networkid).group
 		local hours = math.floor(time / 60 / 60)
-		local linked = GadisMySQLQuery("SELECT * FROM `linked` WHERE `sid`=" .. s64)
+		local linked = GadisMySQLQuery("SELECT * FROM `accounts` WHERE `sid`=" .. s64)
 		if linked then
 			local rankid = GadisMySQLGetResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
 			if rankid ~= nil and rankid[1].id >= 1 then
@@ -19,7 +19,7 @@ function GadisPlayerDisconnect( data )
 				if grp:lower():find("donator") then
 					don = "TRUE"
 				end
-				GadisMySQLQuery("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
+				GadisMySQLQuery("UPDATE `accounts` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
 			end
 		end
 	else
@@ -47,7 +47,7 @@ local function GadisPlayerDisconnectViaShutdown( gadisPly )
 	local time = gadisPly:GetUTimeTotalTime()
 	local grp = ULib.ucl.getUserInfoFromID(gadisPly:SteamID()).group
 	local hours = math.floor(time / 60 / 60)
-	local linked = GadisMySQLQuery("SELECT * FROM `linked` WHERE `sid`=" .. s64)
+	local linked = GadisMySQLQuery("SELECT * FROM `accounts` WHERE `sid`=" .. s64)
 	if linked then
 		local rankid = GadisMySQLGetResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
 		if rankid ~= nil and rankid[1].id >= 1 then
@@ -55,7 +55,7 @@ local function GadisPlayerDisconnectViaShutdown( gadisPly )
 			if grp:lower():find("donator") then
 				don = "TRUE"
 			end
-			GadisMySQLQuery("UPDATE `linked` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
+			GadisMySQLQuery("UPDATE `accounts` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
 		end
 	end
 end
