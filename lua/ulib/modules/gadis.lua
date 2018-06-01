@@ -61,8 +61,10 @@ local function GadisPlayerDisconnectViaShutdown( gadisPly )
 end
 
 local function BKCShuttingDown()
-		for k, v in pairs(player.GetHumans()) do
-			GadisPlayerDisconnectViaShutdown(v)
-		end
+	for k, v in pairs(player.GetHumans()) do
+		local s64 = v:SteamID64()
+		GadisMySQLQuery("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
+		GadisMySQLQuery("DELETE FROM `active` WHERE `id`=" .. s64)
+	end
 end
 hook.Add( "ShutDown", "BKCShuttingDown", BKCShuttingDown )
