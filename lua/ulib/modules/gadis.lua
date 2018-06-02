@@ -44,7 +44,7 @@ local function BKCShuttingDown()
 	for k, v in pairs(player.GetHumans()) do
 		local s64 = v:SteamID64()
 		GadisMySQLQuery("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
-		GadisMySQLQuery("DELETE FROM `active` WHERE `id`=" .. s64)
 	end
+	GadisMySQLQuery("DELETE FROM `active` WHERE TRUE")
 end
 hook.Add( "ShutDown", "BKCShuttingDown", BKCShuttingDown )
