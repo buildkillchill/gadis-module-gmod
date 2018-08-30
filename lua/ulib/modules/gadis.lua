@@ -3,7 +3,7 @@ include("gadis_config.lua")
 
 gameevent.Listen( "player_disconnect" )
 function GadisPlayerDisconnect( data )
-	if not data.networkid:lower():find("bot") then
+	if string.find(data.networkid:lower(), "bot") == nil then
 		local gadisPly = ULib.getPlyByID(data.networkid)
 		local s64 = util.SteamIDTo64(data.networkid)
 		GadisMySQLQuery("UPDATE `metrics` SET `disconnect`=NOW() WHERE `disconnect` IS NULL AND `id`=" .. s64)
@@ -16,7 +16,7 @@ function GadisPlayerDisconnect( data )
 			local rankid = GadisMySQLGetResult("SELECT `id` FROM `ranks` WHERE `name`='" .. grp .. "'")
 			if rankid ~= nil and rankid[1].id >= 1 then
 				local don = "FALSE"
-				if grp:lower():find("donator") then
+				if string.find(grp:lower(), "donator") then
 					don = "TRUE"
 				end
 				GadisMySQLQuery("UPDATE `accounts` SET `donated`=" .. don .. ",`hours`=" .. hours .. ",`rank`=" .. rankid[1].id .. " WHERE `sid`=" .. s64)
@@ -30,7 +30,7 @@ hook.Add( "player_disconnect", "GadisPlayerDisconnect", GadisPlayerDisconnect )
 
 gameevent.Listen( "player_connect" )
 function GadisPlayerConnect( data )
-	if not data.networkid:lower():find("bot") then
+	if string.find(data.networkid:lower(), "bot") == nil then
 		local s64 = util.SteamIDTo64(data.networkid)
 		GadisMySQLQuery("REPLACE INTO `metrics` (id) VALUES (" .. s64 .. ")")
 		GadisMySQLQuery("INSERT INTO `active` (id) VALUES (" .. s64 .. ")")
